@@ -32,7 +32,7 @@
             type="text"
             name="desc"
             id="desc"
-            maxlength="10"
+            maxlength="20"
             placeholder="Enter Here"
           /><br />
 
@@ -94,26 +94,33 @@
       </section>
 
       <section id="search_section">
-        <div id="search_cate">
-          <label for="category2">Category : </label>
-          <select name="category2" id="cate2">
-            <option value="all">All</option>
-            <option value="food">Food</option>
-            <option value="salary">Salary</option>
-            <option value="clothes">Clothes</option>
-            <option value="courses">Courses</option>
-            <option value="others">Others</option></select
-          ><br /><br />
-        </div>
-
-        <div>
+        <div class="summary_heading"><h2>Search Here</h2></div>
+        <div id="search_box">
           <input
             type="text"
-            name="search"
-            id="search"
             maxlength="10"
+            name="content_search"
+            id="search_input"
             placeholder="Search"
           />
+
+          <div>
+            <label for="category">Category : </label>
+            <select name="category" id="cate">
+              <option value="all">All</option>
+              <option value="food">Food</option>
+              <option value="salary">Salary</option>
+              <option value="clothes">Clothes</option>
+              <option value="courses">Courses</option>
+              <option value="others">Others</option>
+            </select>
+            <label for="typeis">Type : </label>
+            <select name="type" id="type">
+              <option value="any">Any</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
         </div>
       </section>
 

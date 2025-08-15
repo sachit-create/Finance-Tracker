@@ -31,14 +31,14 @@ main {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-  background-color: aqua;
+  /* background-color: aqua; */
   align-items: start;
   overflow-y: auto;
 }
 
 
 section{
-    background-color: blue;
+    /* background-color: blue; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,8 +52,6 @@ section{
   }
   #search_section, .container{
     grid-column: span 2;
-    flex-direction: row;
-    justify-content: start;
   }
 }
 
@@ -63,7 +61,7 @@ form{
     padding-top: 1rem;
     padding-left:1rem;
     padding-right: 1rem;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -113,7 +111,7 @@ option{
 
 .summary_heading{
     margin-top: 10px;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     height: 40px;
     width: 96%;
     display: flex;
@@ -123,7 +121,7 @@ option{
 }
 
 .summary_content{
-    background-color: brown;
+    /* background-color: brown; */
     height: 100px;
     width: 96%;
     display: flex;
@@ -147,4 +145,138 @@ option{
     width: 96%;
     height: auto;
     border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+
+#search_box{
+    display: flex;
+    width: 96%;
+    align-items: center;
+    justify-content: space-around;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+#search_box input{
+    width: 40%;
+    margin-left: 10px;
+}
+
+#transactions {
+  padding: 1rem;
+  border-radius: 12px;
+  margin: 1rem auto;
+  width: 96%;
+  overflow: hidden;
+}
+
+#transactions h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.table-wrap {
+  max-height: 300px;        
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.tx-table {
+  width: 96%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.tx-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f9fafb;
+  color: #555;
+  text-align: left;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+  z-index: 2;
+}
+
+.tx-table tbody tr {
+  transition: background 0.2s ease-in-out;
+}
+
+.tx-table tbody tr:hover {
+  background: #f6faff;
+}
+
+.tx-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  color: #444;
+}
+
+.tx-table td.text-right {
+  text-align: right;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.3em 0.6em;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge.income {
+  background: #e6f9f0;
+  color: #0a8754;
+}
+
+.badge.expense {
+  background: #fdeaea;
+  color: #d64545;
+}
+
+.actions {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #0077cc;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+  transition: color 0.2s;
+}
+
+.btn-link:hover {
+  color: #005999;
+  text-decoration: underline;
+}
+
+.btn-link.danger {
+  color: #d64545;
+}
+
+.btn-link.danger:hover {
+  color: #a83232;
+}
+
+.foot-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  padding: 0.5rem;
+  background: #fafafa;
 }
