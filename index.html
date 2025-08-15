@@ -87,10 +87,45 @@
 
         <div class="summary_heading"><h2>Charts</h2></div>
 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <div id="charts">
-          <div id="chart1">...</div>
-          <div id="chart2">...</div>
+          <canvas id="chart1"></canvas>
+          <canvas id="chart2"></canvas>
         </div>
+
+        <script>
+          // Chart 1 - Bar chart
+          new Chart(document.getElementById("chart1"), {
+            type: "bar",
+            data: {
+              labels: ["Jan", "Feb", "Mar", "Apr"],
+              datasets: [
+                {
+                  label: "Sales",
+                  data: [12, 19, 3, 5],
+                  backgroundColor: "rgba(54, 162, 235, 0.7)",
+                },
+              ],
+            },
+          });
+
+          // Chart 2 - Line chart
+          new Chart(document.getElementById("chart2"), {
+            type: "line",
+            data: {
+              labels: ["Jan", "Feb", "Mar", "Apr"],
+              datasets: [
+                {
+                  label: "Visitors",
+                  data: [50, 60, 70, 90],
+                  borderColor: "rgba(255, 99, 132, 1)",
+                  fill: false,
+                },
+              ],
+            },
+          });
+        </script>
       </section>
 
       <section id="search_section">
