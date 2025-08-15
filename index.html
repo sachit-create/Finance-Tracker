@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Nodoubt Finance Tracker</title>
+    <meta
+      name="description"
+      content="This is an good Finance Tracker webstite."
+    />
+    <meta name="author" content="Sachit Kohli" />
+
+    <link rel="icon" href="additional/money.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>My Finance Tracker</h1>
+    </header>
+
+    <main>
+      <h2>Add Transactions</h2>
+
+      <section id="form">
+        <form>
+          <label for="date">Date</label><br />
+          <input type="date" name="date" id="date" /><br /><br />
+
+          <label for="description">Description</label><br />
+          <input type="text" name="desc" id="desc" maxlength="10" /><br /><br />
+
+          <label for="amount">Amount</label><br />
+          <input
+            type="text"
+            name="amount"
+            id="amount"
+            maxlength="6"
+            placeholder=" &#8377;"
+          /><br /><br />
+
+          <label for="category">Category : </label>
+          <select name="category" id="cate">
+            <option value="food">Food</option>
+            <option value="salary">Salary</option>
+            <option value="clothes">Clothes</option>
+            <option value="courses">Courses</option>
+            <option value="others">Others</option>
+          </select>
+
+          <label for="type">Type : </label>
+          <select name="type" id="type">
+            <option value="income">Income</option>
+            <option value="expense">Expense</option></select
+          ><br /><br />
+
+          <button id="add_trac">Confirm</button>
+        </form>
+      </section>
+
+      <section id="summary">
+        <div id="summary_board">
+          <div><h2>Summary DashBoard</h2></div>
+          <div>
+            <h4>Income : &#8377;</h4>
+            <h4>Expenses : &#8377;</h4>
+            <h4>Balance : &#8377;</h4>
+          </div>
+
+          <div id="analytics">
+            <div><h3>Analysis Insights</h3></div>
+            <div><ul id="insights"></ul></div>
+          </div>
+        </div>
+
+        <div id="search">
+          <label for="category2">Category : </label>
+          <select name="category2" id="cate2">
+            <option value="all">All</option>
+            <option value="food">Food</option>
+            <option value="salary">Salary</option>
+            <option value="clothes">Clothes</option>
+            <option value="courses">Courses</option>
+            <option value="others">Others</option></select
+          ><br /><br />
+
+          <input
+            type="text"
+            name="search"
+            id="search"
+            maxlength="10"
+            placeholder="Search"
+          />
+        </div>
+      </section>
+
+      <section id="visuals">
+        <div><h3>Charts</h3></div>
+        <div id="charts">...</div>
+        <div id="analytics">...</div>
+      </section>
+
+      <section id="transactions" class="container">
+        <h2>Transactions</h2>
+
+        <div class="table-wrap">
+          <table class="tx-table" aria-describedby="transactions-caption">
+            <caption id="transactions-caption" class="sr-only">
+              List of all transactions with date, description, category, amount
+              and type
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Category</th>
+                <th scope="col" class="text-right">Amount</th>
+                <th scope="col">Type</th>
+                <th scope="col" class="actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tx-tbody">
+              <!-- Example static rows (remove once wired to JS) -->
+              <tr>
+                <td>2025-08-15</td>
+                <td>Pizza</td>
+                <td>Food</td>
+                <td class="text-right">₹250</td>
+                <td><span class="badge expense">Expense</span></td>
+                <td class="actions">
+                  <button
+                    class="btn-link"
+                    type="button"
+                    aria-label="Edit transaction"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn-link danger"
+                    type="button"
+                    aria-label="Delete transaction"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>2025-08-15</td>
+                <td>Freelance Payment</td>
+                <td>Salary</td>
+                <td class="text-right">₹3,000</td>
+                <td><span class="badge income">Income</span></td>
+                <td class="actions">
+                  <button
+                    class="btn-link"
+                    type="button"
+                    aria-label="Edit transaction"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn-link danger"
+                    type="button"
+                    aria-label="Delete transaction"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6" class="foot-note">
+                  Showing latest first • Use filters above to refine
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
