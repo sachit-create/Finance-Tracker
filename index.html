@@ -20,60 +20,81 @@
     </header>
 
     <main>
-      <h2>Add Transactions</h2>
-
       <section id="form">
         <form>
-          <label for="date">Date</label><br />
-          <input type="date" name="date" id="date" /><br /><br />
+          <h2>Add Transactions</h2>
+          <br />
+          <label for="date">Date : </label><br />
+          <input type="date" name="date" id="date" /><br />
 
-          <label for="description">Description</label><br />
-          <input type="text" name="desc" id="desc" maxlength="10" /><br /><br />
+          <label for="description">Description : </label><br />
+          <input
+            type="text"
+            name="desc"
+            id="desc"
+            maxlength="10"
+            placeholder="Enter Here"
+          /><br />
 
-          <label for="amount">Amount</label><br />
+          <label for="amount">Amount : </label><br />
           <input
             type="text"
             name="amount"
             id="amount"
             maxlength="6"
-            placeholder=" &#8377;"
-          /><br /><br />
+            placeholder="&#8377; Enter Amount "
+          /><br />
 
-          <label for="category">Category : </label>
+          <label for="category">Category : </label><br />
           <select name="category" id="cate">
             <option value="food">Food</option>
             <option value="salary">Salary</option>
             <option value="clothes">Clothes</option>
             <option value="courses">Courses</option>
-            <option value="others">Others</option>
-          </select>
+            <option value="others">Others</option></select
+          ><br />
 
-          <label for="type">Type : </label>
+          <label for="type">Type : </label><br />
           <select name="type" id="type">
             <option value="income">Income</option>
             <option value="expense">Expense</option></select
           ><br /><br />
 
-          <button id="add_trac">Confirm</button>
+          <div id="btn_div">
+            <button id="add_trac" type="submit">Confirm</button>
+          </div>
         </form>
       </section>
 
       <section id="summary">
-        <div id="summary_board">
-          <div><h2>Summary DashBoard</h2></div>
-          <div>
-            <h4>Income : &#8377;</h4>
-            <h4>Expenses : &#8377;</h4>
-            <h4>Balance : &#8377;</h4>
-          </div>
+        <div class="summary_heading"><h2>Summary DashBoard</h2></div>
 
-          <div id="analytics">
-            <div><h3>Analysis Insights</h3></div>
-            <div><ul id="insights"></ul></div>
-          </div>
+        <div class="summary_content">
+          <h4>Income &nbsp;&nbsp;&nbsp;&nbsp;: &#8377;</h4>
+          <h4>Expenses : &#8377;</h4>
+          <h4>Balance &nbsp;&nbsp;&nbsp;: &#8377;</h4>
         </div>
 
-        <div id="search">
+        <div class="summary_heading"><h2>Analysis Insights</h2></div>
+
+        <div class="summary_content">
+          <ul id="insights">
+            <li>Hello</li>
+            <li>Ok</li>
+            <li>Bye</li>
+          </ul>
+        </div>
+
+        <div class="summary_heading"><h2>Charts</h2></div>
+
+        <div id="charts">
+          <div id="chart1">...</div>
+          <div id="chart2">...</div>
+        </div>
+      </section>
+
+      <section id="search_section">
+        <div id="search_cate">
           <label for="category2">Category : </label>
           <select name="category2" id="cate2">
             <option value="all">All</option>
@@ -83,7 +104,9 @@
             <option value="courses">Courses</option>
             <option value="others">Others</option></select
           ><br /><br />
+        </div>
 
+        <div>
           <input
             type="text"
             name="search"
@@ -92,12 +115,6 @@
             placeholder="Search"
           />
         </div>
-      </section>
-
-      <section id="visuals">
-        <div><h3>Charts</h3></div>
-        <div id="charts">...</div>
-        <div id="analytics">...</div>
       </section>
 
       <section id="transactions" class="container">
@@ -179,5 +196,6 @@
         </div>
       </section>
     </main>
+    <script src="scripts/scripts.js"></script>
   </body>
 </html>
