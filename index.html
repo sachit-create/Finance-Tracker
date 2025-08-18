@@ -10,33 +10,30 @@
   </head>
   <body>
     <header>
-      <div id="header_side">
-        <div id="header_side_upper" class="header_side_common">
-          <div class="header_upper">
-            <h1 id="greet" class="greet">Hi, Sachit</h1>
-          </div>
-          <div class="header_upper">
-            <img id="logo" src="" alt="" />
-          </div>
+      <div id="header_side_upper" class="header_side_common">
+        <div id="logo_div" class="header_upper">
+          <img id="logo" src="assets/images/avatar.jpg" alt="logo" />
         </div>
-        <div id="header_lower" class="header_side_common">
-          <h3>Insights</h3>
-          <h3>add details</h3>
+        <div class="header_upper">
+          <h1 id="greet" class="greet">Hi, Sachit</h1>
         </div>
+      </div>
+      <div id="header_lower" class="header_side_common">
+        <a href="#"><img src="assets/images/settings.png" alt="settings" /></a>
       </div>
     </header>
 
     <main>
       <section id="section1">
-        <div class="section1_content">
-          <h3>this is recent 5</h3>
-        </div>
-        <div class="section1_content">
-          <table border="1" id="recent_5">
-            <tr>
-              <th>discription</th>
-              <th>category</th>
-              <th>amount</th>
+        <div class="content_background">
+          <div class="section1_content heading" class="heading">
+            <h3>RECENT TRANSACTIONS</h3>
+          </div>
+          <table id="recent_5" class="transactions">
+            <tr id="table_row">
+              <th>DESCRPTION</th>
+              <th>CATEGORY</th>
+              <th>AMOUNT</th>
             </tr>
             <!-- example transacitons -->
             <tr>
@@ -54,50 +51,129 @@
               <td>home</td>
               <td>3000</td>
             </tr>
+            <tr>
+              <td>rent</td>
+              <td>home</td>
+              <td>3000</td>
+            </tr>
+            <tr>
+              <td>rent</td>
+              <td>home</td>
+              <td>3000</td>
+            </tr>
           </table>
         </div>
       </section>
 
       <section id="section2">
-        <div class="section2_content">
-          <h3>charts here</h3>
+        <div class="content_background">
+          <div class="heading">
+            <h3>ADD TRANSACITONS</h3>
+          </div>
+          <form>
+            <div class="form_row">
+              <input type="date" name="date" id="date" />
+              <input
+                type="text"
+                name="description"
+                placeholder="Descripion"
+                maxlength="20"
+                id="description"
+              />
+            </div>
+            <div class="form_row">
+              <select name="Category" id="cate">
+                <option value="food">FOOD</option>
+                <option value="clother">CLOTHES</option>
+                <option value="courses">COURSES</option>
+                <option value="fees">FEES</option>
+                <option value="others">OHTERS</option>
+              </select>
+
+              <select name="type" id="type">
+                <option value="income">INCOME</option>
+                <option value="expense">EXPENSE</option>
+              </select>
+
+              <input
+                type="text"
+                name="amount"
+                id="amount"
+                placeholder="&#8377; Amount"
+                maxlength="6"
+              />
+            </div>
+            <div class="form_row">
+              <input type="submit" id="submit" placeholder="submit" />
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="section4">
+        <div class="content_background" id="summary_content">
+          <div class="heading"><h3>SUMMARY BOARD</h3></div>
+
+          <div id="section4_rows">
+             <div class="section4_content" id="basic">
+              <div class="head"><h4>SALARY : </h4></div>
+              <div class="head green"><h4>INCOME : </h4></div>
+              <div class="head red"><h4>EXPENSE : </h4></div>
+            </div>
+            <div class="section4_content">
+               <div id="basic2">
+                <div class="head"><h4>BUDGET : </h4></div>
+                <div class="head red"><h4>EXPENSIVE : </h4></div>
+               </div>
+            </div>
+            <div id="budget_add" class="section4_content">
+              <input
+                type="text"
+                id="budget"
+                name="budget"
+                placeholder="&#8377; Enter Budget"
+              />
+              <button>ADD</button>
+            </div>
+          </div>
         </div>
       </section>
 
       <section id="section3">
-        <div class="section3_content">
-          <h3>this is icome and budget</h3>
-        </div>
-        <div class="section3_content">
-          <h3>this is balance expense and income</h3>
+        <div class="content_background">
+          <div class="section3_content heading">
+            <h3>CHARTS</h3>
+          </div>
         </div>
       </section>
 
-      <section id="seciton4">
-        <div class="section4_content">
-          <h3>All Transacitons</h3>
-        </div>
-        <div class="section4_content">
-          <table border="1" id="all_transactions">
-            <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th colspan="2">Actions</th>
-            </tr>
-            <!-- example data -->
-            <tr>
-              <td>05-08-2005</td>
-              <td>burger</td>
-              <td>food</td>
-              <td>expense</td>
-              <td>200</td>
-              <td>edit</td>
-              <td>delete</td>
-            </tr>
-          </table>
+      <section id="section5">
+        <div class="content_background" id="transaction_background">
+          <div class="section5_content">
+            <h3>All Transacitons</h3>
+          </div>
+          <div class="section5_content">
+            <table id="all_transactions" class="transactions">
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th colspan="2">Actions</th>
+              </tr>
+              <!-- example data -->
+              <tr>
+                <td>05-08-2005</td>
+                <td>burger</td>
+                <td>food</td>
+                <td>expense</td>
+                <td>200</td>
+                <td>edit</td>
+                <td>delete</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </section>
     </main>
