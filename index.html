@@ -24,53 +24,12 @@
     </header>
 
     <main>
-      <section id="section1">
-        <div class="content_background">
-          <div class="section1_content heading" class="heading">
-            <h3>RECENT TRANSACTIONS</h3>
-          </div>
-          <table id="recent_5" class="transactions">
-            <tr id="table_row">
-              <th>DESCRPTION</th>
-              <th>CATEGORY</th>
-              <th>AMOUNT</th>
-            </tr>
-            <!-- example transacitons -->
-            <tr>
-              <td>burger</td>
-              <td>food</td>
-              <td>200</td>
-            </tr>
-            <tr>
-              <td>shirt</td>
-              <td>clothes</td>
-              <td>1000</td>
-            </tr>
-            <tr>
-              <td>rent</td>
-              <td>home</td>
-              <td>3000</td>
-            </tr>
-            <tr>
-              <td>rent</td>
-              <td>home</td>
-              <td>3000</td>
-            </tr>
-            <tr>
-              <td>rent</td>
-              <td>home</td>
-              <td>3000</td>
-            </tr>
-          </table>
-        </div>
-      </section>
-
       <section id="section2">
         <div class="content_background">
           <div class="heading">
             <h3>ADD TRANSACITONS</h3>
           </div>
-          <form>
+          <form id="myForm">
             <div class="form_row">
               <input type="date" name="date" id="date" />
               <input
@@ -84,7 +43,7 @@
             <div class="form_row">
               <select name="Category" id="cate">
                 <option value="food">FOOD</option>
-                <option value="clother">CLOTHES</option>
+                <option value="clothes">CLOTHES</option>
                 <option value="courses">COURSES</option>
                 <option value="fees">FEES</option>
                 <option value="others">OHTERS</option>
@@ -110,21 +69,44 @@
         </div>
       </section>
 
+      <section id="section1">
+        <div class="content_background">
+          <div class="section1_content heading" class="heading">
+            <h3>RECENT TRANSACTIONS</h3>
+          </div>
+          <table id="recent_5" class="transactions">
+            <tr id="table_row">
+              <th>DESCRPTION</th>
+              <th>CATEGORY</th>
+              <th>AMOUNT</th>
+            </tr>
+            <!-- example transacitons -->
+             <tbody id="recent_5_data">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+             </tbody>
+          </table>
+        </div>
+      </section>
+
       <section id="section4">
         <div class="content_background" id="summary_content">
           <div class="heading"><h3>SUMMARY BOARD</h3></div>
 
           <div id="section4_rows">
-             <div class="section4_content" id="basic">
-              <div class="head"><h4>SALARY : </h4></div>
-              <div class="head green"><h4>INCOME : </h4></div>
-              <div class="head red"><h4>EXPENSE : </h4></div>
+            <div class="section4_content" id="basic">
+              <div class="head"><h4>SALARY :</h4></div>
+              <div class="head green"><h4>INCOME :</h4></div>
+              <div class="head red"><h4>EXPENSE :</h4></div>
             </div>
             <div class="section4_content">
-               <div id="basic2">
-                <div class="head"><h4>BUDGET : </h4></div>
-                <div class="head red"><h4>EXPENSIVE : </h4></div>
-               </div>
+              <div id="basic2">
+                <div class="head"><h4>BUDGET :</h4></div>
+                <div class="head red"><h4>EXPENSIVE :</h4></div>
+              </div>
             </div>
             <div id="budget_add" class="section4_content">
               <input
@@ -149,36 +131,62 @@
 
       <section id="section5">
         <div class="content_background" id="transaction_background">
-          <div class="section5_content">
-            <h3>All Transacitons</h3>
+          <div id="t_heading">
+            <h3>ALL TRANSACTIONS</h3>
           </div>
-          <div class="section5_content">
+          <div class="table_wrapper">
             <table id="all_transactions" class="transactions">
-              <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th colspan="2">Actions</th>
-              </tr>
-              <!-- example data -->
-              <tr>
-                <td>05-08-2005</td>
-                <td>burger</td>
-                <td>food</td>
-                <td>expense</td>
-                <td>200</td>
-                <td>edit</td>
-                <td>delete</td>
-              </tr>
+              <thead>
+                <tr id="table_row">
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th colspan="2">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="trac_rows">
+                <!-- example data here -->
+                <!-- <tr>
+                  <td id="id">1</td>
+                  <td id="delbydate">05-08-2005</td>
+                  <td>burger</td>
+                  <td>food</td>
+                  <td class="type_inc_exp">income</td>
+                  <td>200</td>
+                  <td class="blue">EDIT</td>
+                  <td class="delete"id="del">DELETE</td>
+                </tr> -->
+              </tbody>
             </table>
           </div>
         </div>
+      </section>
+
+      <section>
+        <button onclick="clearAll()">clear all</button>
       </section>
     </main>
 
     <script src="scripts/scripts.js"></script>
     <script src="scripts/charts.js"></script>
+    <script>
+      const inc_exp = document.getElementsByClassName("type_inc_exp");
+
+      for (let i = 0; i < inc_exp.length; i++) {
+        let element = inc_exp[i];
+        let value = element.innerHTML.trim().toLowerCase();
+
+        if (value === "expense") {
+          element.style.color = "red";
+        } else if (value === "income") {
+          element.style.color = "green";
+        } else {
+          element.style.color = "orange";
+        }
+      }
+    </script>
   </body>
 </html>
