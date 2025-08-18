@@ -1,11 +1,15 @@
 let transactions = [];
+let section5 = document.getElementById("section5");
+let section6 = document.getElementById("section6");
 
 transactions = JSON.parse(localStorage.getItem("allTransactions")) || [];
-render_rows();
-top_5();
+
 function load_trac(tracs) {
   localStorage.setItem("allTransactions", JSON.stringify(tracs));
 }
+
+render_rows();
+top_5();
 
 document.getElementById("myForm").addEventListener("submit", function (e) {
   e.preventDefault();
@@ -47,6 +51,7 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
   print_trac();
   render_rows();
   top_5();
+  transaction_record();
   this.reset();
 });
 
@@ -100,4 +105,18 @@ function clearAll() {
   print_trac();
   render_rows();
   top_5();
+  transaction_record();
 }
+
+function transaction_record() {
+  if (transactions.length === 0) {
+    section5.style.display = "none";
+    section6.style.display = "flex";
+  } else if(transactions.length > 0){
+    section6.style.display = "none";
+    section5.style.display = "flex";
+  }
+}
+
+
+window.onload(transaction_record())

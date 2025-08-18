@@ -359,7 +359,7 @@ button:hover {
 @media (min-width: 720px) {
 
 
-  #transaction_background {
+  .transaction_background {
     width: 97.5%;
   }
 
