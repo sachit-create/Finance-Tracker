@@ -177,6 +177,7 @@ function update_summary(transaction) {
 }
 
 function reset_summary() {
+  load_summary();
   summary.budget = 0;
   summary.expense = 0;
   summary.expensive = "none";
@@ -242,3 +243,31 @@ function delete_row(button) {
   transaction_record();
   update_summary2();
 }
+
+
+const ctx2 = document.getElementById("myChart2");
+
+let summary2 = JSON.parse(localStorage.getItem("summary")) || {};
+console.log(summary2)
+
+new Chart(ctx2, {
+  type: "bar",
+  data: {
+    labels: ["BALANCE","INCOME","EXPENSE","BUDGET","AMOUNT"],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [Number(summary2.balance),summary2.income,summary2.expense,summary2.budget,summary2.expensive_amount],
+        borderWidth: 2,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: {
+        min:0,
+        max:100000
+      },
+    },
+  },
+});

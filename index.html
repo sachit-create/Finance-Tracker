@@ -82,13 +82,13 @@
               <th>AMOUNT</th>
             </tr>
             <!-- example transacitons -->
-             <tbody id="recent_5_data">
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-             </tbody>
+            <tbody id="recent_5_data">
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </section>
@@ -124,8 +124,11 @@
 
       <section id="section3">
         <div class="content_background">
-          <div class="section3_content heading">
-            <h3>CHARTS</h3>
+          <div class="heading">
+            <h3>BAR CHART</h3>
+          </div>
+          <div class="chart_background">
+            <canvas id="myChart2"></canvas>
           </div>
         </div>
       </section>
@@ -173,11 +176,13 @@
       </section>
 
       <section>
-        <button onclick="clearAll()">clear all</button>
+        <button style="height: 50px; width: 200px" onclick="clearAll()">
+          clear all
+        </button>
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/scripts.js"></script>
-    <script src="scripts/charts.js"></script>
   </body>
 </html>

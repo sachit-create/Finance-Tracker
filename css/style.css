@@ -376,3 +376,12 @@ button:hover {
     font-size: x-large;
   }
 }
+
+
+.chart_background{
+  height: 85%;
+  width: 75%;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
