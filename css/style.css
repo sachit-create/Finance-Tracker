@@ -347,11 +347,11 @@ button:hover {
   text-align: center;
   white-space: nowrap;     
 }
+
 #all_transactions tbody tr:nth-child(even){
   background: var(--bgcolor, #f7f7f7);
 }
 
-/* Make links look clickable */
 .blue{ color: #1a73e8; cursor: pointer; }
 .blue:hover, .delete:hover{ text-decoration: underline; }
 .delete{ color: #e53935; cursor: pointer; }

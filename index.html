@@ -46,6 +46,7 @@
                 <option value="clothes">CLOTHES</option>
                 <option value="courses">COURSES</option>
                 <option value="fees">FEES</option>
+                <option value="salary">SALARY</option>
                 <option value="others">OHTERS</option>
               </select>
 
@@ -98,24 +99,24 @@
 
           <div id="section4_rows">
             <div class="section4_content" id="basic">
-              <div class="head"><h4>SALARY :</h4></div>
-              <div class="head green"><h4>INCOME :</h4></div>
-              <div class="head red"><h4>EXPENSE :</h4></div>
+              <div class="head"><h4 id="summ_balance"></h4></div>
+              <div class="head green"><h4 id="summ_income"></h4></div>
+              <div class="head red"><h4 id="summ_expense"></h4></div>
             </div>
             <div class="section4_content">
               <div id="basic2">
-                <div class="head"><h4>BUDGET :</h4></div>
-                <div class="head red"><h4>EXPENSIVE :</h4></div>
+                <div class="head"><h4 id="summ_budget"></h4></div>
+                <div class="head red"><h4 id="summ_expensive"></h4></div>
               </div>
             </div>
             <div id="budget_add" class="section4_content">
               <input
                 type="text"
-                id="budget"
+                id="budget_input"
                 name="budget"
                 placeholder="&#8377; Enter Budget"
               />
-              <button>ADD</button>
+              <button onclick="addBudget()">ADD</button>
             </div>
           </div>
         </div>
@@ -157,7 +158,7 @@
                   <td class="type_inc_exp">income</td>
                   <td>200</td>
                   <td class="blue">EDIT</td>
-                  <td class="delete"id="del">DELETE</td>
+                  <td class="delete" id="del" >DELETE</td>
                 </tr> -->
               </tbody>
             </table>
@@ -178,21 +179,5 @@
 
     <script src="scripts/scripts.js"></script>
     <script src="scripts/charts.js"></script>
-    <script>
-      const inc_exp = document.getElementsByClassName("type_inc_exp");
-
-      for (let i = 0; i < inc_exp.length; i++) {
-        let element = inc_exp[i];
-        let value = element.innerHTML.trim().toLowerCase();
-
-        if (value === "expense") {
-          element.style.color = "red";
-        } else if (value === "income") {
-          element.style.color = "green";
-        } else {
-          element.style.color = "orange";
-        }
-      }
-    </script>
   </body>
 </html>
