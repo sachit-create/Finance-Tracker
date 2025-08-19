@@ -145,8 +145,6 @@ section {
   border-bottom: 2px solid black;
 }
 
-
-
 #recent_5 tr {
   height: 40px;
 }
@@ -311,17 +309,17 @@ button:hover {
   justify-content: center;
 }
 
-.table_wrapper{
+.table_wrapper {
   width: 100%;
-  height:100%;           
-  overflow: auto;         
-  -webkit-overflow-scrolling: touch; 
-  touch-action: pan-x pan-y;    
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
 }
 
-#all_transactions{
+#all_transactions {
   width: 100%;
-  border-collapse: collapse;         
+  border-collapse: collapse;
   table-layout: auto;
   color: white;
 }
@@ -330,10 +328,10 @@ button:hover {
   width: 100%;
 }
 
-#all_transactions thead th{
+#all_transactions thead th {
   position: sticky;
   top: 0;
-  background-color:black;
+  background-color: black;
   color: #fff;
   z-index: 2;
   padding: 10px;
@@ -341,24 +339,31 @@ button:hover {
 }
 
 #all_transactions th,
-#all_transactions td{
+#all_transactions td {
   border: 2px solid #444;
   padding: 8px 10px;
   text-align: center;
-  white-space: nowrap;     
+  white-space: nowrap;
 }
 
-#all_transactions tbody tr:nth-child(even){
+#all_transactions tbody tr:nth-child(even) {
   background: var(--bgcolor, #f7f7f7);
 }
 
-.blue{ color: #1a73e8; cursor: pointer; }
-.blue:hover, .delete:hover{ text-decoration: underline; }
-.delete{ color: #e53935; cursor: pointer; }
+.blue {
+  color: #1a73e8;
+  cursor: pointer;
+}
+.blue:hover,
+.delete:hover {
+  text-decoration: underline;
+}
+.delete {
+  color: #e53935;
+  cursor: pointer;
+}
 
 @media (min-width: 720px) {
-
-
   .transaction_background {
     width: 97.5%;
   }
@@ -377,11 +382,19 @@ button:hover {
   }
 }
 
-
-.chart_background{
+.chart_background {
   height: 85%;
   width: 75%;
   display: flex;
   align-items: center;
   justify-self: center;
+}
+
+@media (max-width: 720px) {
+  .chart_background {
+    height: 90%;
+    width: 90%;
+    min-width: 250px;
+    min-height: 150px;
+  }
 }
