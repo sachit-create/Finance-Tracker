@@ -1,0 +1,14 @@
+# Created by GitHub
+.DS_Store
+Thumbs.db
+
+# VS Code / Editor files
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS generated files
+._*
