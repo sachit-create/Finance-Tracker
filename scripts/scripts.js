@@ -131,6 +131,7 @@ function transaction_record() {
   top_5();
   render_summary();
   render_rows();
+  renderChart();
   if (transactions.length === 0) {
     section5.style.display = "none";
     section6.style.display = "flex";
@@ -174,6 +175,7 @@ function update_summary(transaction) {
 
   load_summary();
   render_summary();
+  renderChart();
 }
 
 function reset_summary() {
@@ -204,6 +206,7 @@ function update_summary2() {
     }
   }
   render_summary();
+  renderChart();
   load_summary();
 }
 
@@ -228,6 +231,7 @@ function addBudget() {
   }
   summary.budget = budget;
   render_budget();
+  renderChart();
   load_summary();
 }
 
@@ -244,30 +248,49 @@ function delete_row(button) {
   update_summary2();
 }
 
-
 const ctx2 = document.getElementById("myChart2");
+let chart2 = null;
 
-let summary2 = JSON.parse(localStorage.getItem("summary")) || {};
-console.log(summary2)
+function renderChart() {
+  if (!ctx2) return;
 
-new Chart(ctx2, {
-  type: "bar",
-  data: {
-    labels: ["BALANCE","INCOME","EXPENSE","BUDGET","AMOUNT"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [Number(summary2.balance),summary2.income,summary2.expense,summary2.budget,summary2.expensive_amount],
-        borderWidth: 2,
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: {
-        min:0,
-        max:100000
+  const chartValues = [
+    Number(summary.balance || 0),
+    Number(summary.income || 0),
+    Number(summary.expense || 0),
+    Number(summary.budget || 0),
+    Number(summary.expensive_amount || 0),
+  ];
+
+  if (chart2) {
+    chart2.data.datasets[0].data = chartValues;
+    chart2.update();
+    return;
+  }
+
+  chart2 = new Chart(ctx2, {
+    type: "bar",
+    data: {
+      labels: ["BALANCE", "INCOME", "EXPENSE", "BUDGET", "AMOUNT"],
+      datasets: [
+        {
+          label: "# of Votes",
+          data: chartValues,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          min: 0,
+          max: 100000,
+        },
       },
     },
-  },
-});
+  });
+}
+
+let summary2 = JSON.parse(localStorage.getItem("summary")) || {};
+console.log(summary2);
+renderChart();
