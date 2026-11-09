@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,40[...]
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 :root {
   --heading: linear-gradient(to left, rgb(27, 16, 16), grey);
@@ -21,8 +21,8 @@
 }
 
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -30,8 +30,9 @@
 html,
 body {
   background: var(--bgcolor);
-  font-family: poopins, sans-serif;
+  font-family: "Poppins", "Noto Sans", sans-serif;
   min-width: 100%;
+  color: var(--text);
 }
 
 header {
@@ -120,29 +121,6 @@ main {
   column-gap: 10px;
 }
 
-@media (max-width: 720px) {
-  #header_lower {
-    margin-right: 10px;
-  }
-
-  #logo_div {
-    display: none;
-  }
-
-  main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    gap: 30px;
-  }
-
-  section {
-    height: 300px;
-    width: 100%;
-  }
-}
-
 section {
   display: flex;
   justify-content: center;
@@ -182,17 +160,9 @@ section {
   border-bottom: 2px solid var(--line);
 }
 
-#recent_5 tr {
-  height: 40px;
-}
-
-#recent_5 td {
-  text-align: center;
-}
-
-#recent_5 tr:nth-child(even) {
-  background-image: var(--bgcolor);
-}
+#recent_5 tr { height: 40px; }
+#recent_5 td { text-align: center; }
+#recent_5 tr:nth-child(even) { background-image: var(--bgcolor); }
 
 form {
   width: 100%;
@@ -220,26 +190,12 @@ form input {
   border-radius: 5px;
   padding: 8px;
   background-color: coral;
-  box-shadow: inset;
   transition: 0.5s ease;
 }
 
-form input::placeholder {
-  color: black;
-}
-
-form input:hover,
-select:hover,
-option:hover {
-  background-color: gold;
-  letter-spacing: 1px;
-}
-
-form input:focus,
-select:focus {
-  border: 1px solid black;
-  outline: none;
-}
+form input::placeholder { color: black; }
+form input:hover, select:hover, option:hover { background-color: gold; letter-spacing: 1px; }
+form input:focus, select:focus { border: 1px solid black; outline: none; }
 
 form select {
   height: 90%;
@@ -276,19 +232,9 @@ form select {
   flex-wrap: wrap;
 }
 
-.head {
-  width: 30%;
-  font-size: medium;
-  color: var(--text);
-}
-
-.red {
-  color: red;
-}
-
-.green {
-  color: green;
-}
+.head { width: 30%; font-size: medium; color: var(--text); }
+.red { color: red; }
+.green { color: green; }
 
 #basic2 {
   width: 100%;
@@ -300,7 +246,7 @@ form select {
 }
 
 #budget_add input,
-button {
+#budget_add button {
   height: 80%;
   width: 40%;
   font-size: large;
@@ -308,32 +254,15 @@ button {
   border-radius: 5px;
   padding: 8px;
   background-color: coral;
-  box-shadow: inset;
   transition: 0.5s ease;
 }
 
-#budget_add button {
-  width: 20%;
-}
+#budget_add button { width: 20%; cursor: pointer; }
+#budget_add input::placeholder { color: black; }
+#budget_add input:hover, #budget_add button:hover { background-color: gold; letter-spacing: 1px; }
+#budget_add input:focus { border: 1px solid black; outline: none; }
 
-#budget_add input::placeholder {
-  color: black;
-}
-
-#budget_add input:hover,
-button:hover {
-  background-color: gold;
-  letter-spacing: 1px;
-}
-
-#budget_add input:focus {
-  border: 1px solid black;
-  outline: none;
-}
-
-#section5 {
-  grid-column: span 2;
-}
+#section5 { grid-column: span 2; }
 
 #t_heading {
   height: 15%;
@@ -359,9 +288,7 @@ button:hover {
   color: var(--text);
 }
 
-#all_transacitons tr {
-  width: 100%;
-}
+#all_transactions tr { width: 100%; }
 
 #all_transactions thead th {
   position: sticky;
@@ -381,41 +308,10 @@ button:hover {
   white-space: nowrap;
 }
 
-#all_transactions tbody tr:nth-child(even) {
-  background: var(--bgcolor, #f7f7f7);
-}
-
-.blue {
-  color: #1a73e8;
-  cursor: pointer;
-}
-.blue:hover,
-.delete:hover {
-  text-decoration: underline;
-}
-.delete {
-  color: #e53935;
-  cursor: pointer;
-}
-
-@media (min-width: 720px) {
-  .transaction_background {
-    width: 97.5%;
-  }
-
-  #t_heading {
-    height: 15%;
-    width: 100%;
-    background-image: var(--heading);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #t_heading h3 {
-    font-size: x-large;
-  }
-}
+#all_transactions tbody tr:nth-child(even) { background: var(--bgcolor, #f7f7f7); }
+.blue { color: #1a73e8; cursor: pointer; }
+.blue:hover, .delete:hover { text-decoration: underline; }
+.delete { color: #e53935; cursor: pointer; }
 
 .chart_background {
   height: 85%;
@@ -425,18 +321,10 @@ button:hover {
   justify-self: center;
 }
 
-@media (max-width: 720px) {
-  .chart_background {
-    height: 90%;
-    width: 90%;
-    min-width: 250px;
-    min-height: 150px;
-  }
-}
-
 /* Settings dialog and account data actions */
 .settings-dialog {
   width: min(440px, calc(100% - 32px));
+  max-height: calc(100vh - 32px);
   margin: auto;
   padding: 26px;
   border: 1px solid var(--line);
@@ -449,6 +337,13 @@ button:hover {
 .settings-dialog::backdrop {
   background: rgba(5, 10, 18, 0.65);
   backdrop-filter: blur(3px);
+}
+
+.settings-dialog.settings-dialog-open {
+  position: fixed;
+  inset: 0;
+  display: block;
+  z-index: 1000;
 }
 
 .settings-heading,
@@ -467,9 +362,7 @@ button:hover {
   letter-spacing: 1px;
 }
 
-.settings-heading h2 {
-  font-size: 24px;
-}
+.settings-heading h2 { font-size: 24px; }
 
 .settings-close {
   width: 36px;
@@ -483,9 +376,7 @@ button:hover {
   font-size: 28px;
 }
 
-.settings-close:hover {
-  background: rgba(127, 127, 127, 0.18);
-}
+.settings-close:hover { background: rgba(127, 127, 127, 0.18); }
 
 .theme-setting {
   margin-top: 24px;
@@ -495,10 +386,7 @@ button:hover {
 }
 
 .theme-setting span,
-.settings-actions > div {
-  display: grid;
-  gap: 5px;
-}
+.settings-actions > div { display: grid; gap: 5px; }
 
 .theme-setting small,
 .settings-actions small {
@@ -515,11 +403,7 @@ button:hover {
   color: var(--text);
 }
 
-.settings-actions {
-  display: grid;
-  gap: 11px;
-  margin-top: 20px;
-}
+.settings-actions { display: grid; gap: 11px; margin-top: 20px; }
 
 .settings-action {
   width: 100%;
@@ -534,22 +418,9 @@ button:hover {
   text-align: left;
 }
 
-.settings-action:hover {
-  background: rgba(127, 127, 127, 0.15);
-  letter-spacing: 0;
-}
-
-.settings-danger {
-  border-color: #b94b4b;
-  color: #e66b6b;
-}
-
-.settings-status {
-  min-height: 18px;
-  margin-top: 12px;
-  color: #5da879;
-  font-size: 12px;
-}
+.settings-action:hover { background: rgba(127, 127, 127, 0.15); letter-spacing: 0; }
+.settings-danger { border-color: #b94b4b; color: #e66b6b; }
+.settings-status { min-height: 18px; margin-top: 12px; color: #5da879; font-size: 12px; }
 
 .clear-all-section {
   grid-column: 1 / -1;
@@ -564,12 +435,33 @@ button:hover {
   cursor: pointer;
 }
 
-:root[data-theme="light"] .header_upper h1 {
-  color: #263445;
+:root[data-theme="light"] .header_upper h1 { color: #263445; }
+:root[data-theme="light"] .settings-eyebrow { color: #416c9d; }
+
+@media (min-width: 720px) {
+  .transaction_background { width: 97.5%; }
+  #t_heading h3 { font-size: x-large; }
 }
 
-:root[data-theme="light"] .settings-eyebrow {
-  color: #416c9d;
+@media (max-width: 720px) {
+  #header_lower { margin-right: 10px; }
+  #logo_div { display: none; }
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 30px;
+  }
+  section { height: 300px; width: 100%; }
+  .chart_background {
+    height: 90%;
+    width: 90%;
+    min-width: 250px;
+    min-height: 150px;
+  }
+  .clear-all-section { height: auto; }
+  .settings-dialog { padding: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
