@@ -1,196 +1,12 @@
-let transactions = [];
-let section5 = document.getElementById("section5");
-let section6 = document.getElementById("section6");
-let balance = document.getElementById("summ_balance");
-let income = document.getElementById("summ_income");
-let expense = document.getElementById("summ_expense");
-let budget = document.getElementById("summ_budget");
-let expensive = document.getElementById("summ_expensive");
-let trac_rows = document.getElementById("trac_rows");
-let summary = {
-  balance: 0,
-  income: 0,
-  expense: 0,
-  budget: 0,
-  expensive: "none",
-  expensive_amount: 0,
-};
+(() => {
+  "use strict";
 
-const settingsDialog = document.getElementById("settings-dialog");
-const themeSelect = document.getElementById("theme-select");
-const settingsStatus = document.getElementById("settings-status");
-const THEME_STORAGE_KEY = "financeTrackerTheme";
-
-window.onload = function () {
-  transaction_record();
-  initializeSettings();
-};
-
-function load_trac() {
-  localStorage.setItem("allTransactions", JSON.stringify(transactions));
-}
-
-function load_summary() {
-  localStorage.setItem("summary", JSON.stringify(summary));
-}
-
-function initializeSettings() {
-  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  const theme = savedTheme === "light" ? "light" : "dark";
-  document.documentElement.dataset.theme = theme;
-  themeSelect.value = theme;
-
-  document.getElementById("settings-button").addEventListener("click", function () {
-    settingsDialog.showModal();
-  });
-  document.getElementById("settings-close").addEventListener("click", function () {
-    settingsDialog.close();
-  });
-  settingsDialog.addEventListener("click", function (event) {
-    if (event.target === settingsDialog) settingsDialog.close();
-  });
-  themeSelect.addEventListener("change", function () {
-    const selectedTheme = themeSelect.value === "light" ? "light" : "dark";
-    document.documentElement.dataset.theme = selectedTheme;
-    localStorage.setItem(THEME_STORAGE_KEY, selectedTheme);
-  });
-  document.getElementById("download-csv").addEventListener("click", downloadTransactionsCsv);
-  document.getElementById("reset-data").addEventListener("click", function () {
-    if (!confirm("This will permanently delete all saved transactions and your budget. Continue?")) return;
-    clearAll(true);
-    settingsStatus.textContent = "Your transactions and budget have been reset.";
-  });
-}
-
-function csvCell(value) {
-  let text = String(value == null ? "" : value);
-  // Prevent spreadsheet formula execution for user-entered values.
-  if (/^[\s]*[=+@\-]/.test(text)) text = "'" + text;
-  return '"' + text.replace(/"/g, '""') + '"';
-}
-
-function downloadTransactionsCsv() {
-  const headers = ["id", "date", "description", "category", "type", "amount"];
-  const rows = transactions.map(function (transaction, index) {
-    return [index + 1, transaction.date, transaction.description, transaction.category, transaction.type, transaction.amount];
-  });
-  const csv = [headers, ...rows].map(function (row) {
-    return row.map(csvCell).join(",");
-  }).join("\r\n");
-  const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
-  const downloadUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = downloadUrl;
-  link.download = "finance-transactions.csv";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(downloadUrl);
-  settingsStatus.textContent = transactions.length
-    ? "Your CSV download has started."
-    : "Downloaded an empty CSV; there are no transactions yet.";
-}
-
-document.getElementById("myForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  let date = document.getElementById("date").value;
-  let description = String(
-    document.getElementById("description").value.replace(/\s+/g, " ").trim()
-  );
-  let category = String(document.getElementById("cate").value);
-  let type = document.getElementById("type").value;
-  let amount = Number(document.getElementById("amount").value);
-
-  if (
-    date === "" ||
-    description === "" ||
-    category === "" ||
-    type === "" ||
-    amount === "" ||
-    amount === 0 ||
-    isNaN(amount)
-  ) {
-    alert("Check entered details !");
-    return;
-  }
-
-  let transaction = {
-    date: date,
-    description: description.toUpperCase(),
-    category: category.toUpperCase(),
-    type: type.toUpperCase(),
-    amount: amount,
+  const STORAGE_KEYS = {
+    transactions: "allTransactions",
+    summary: "summary",
+    theme: "financeTrackerTheme",
   };
-
-  transactions.push(transaction);
-
-  update_summary(transaction);
-  load_trac();
-  transaction_record();
-  this.reset();
-});
-
-function top_5() {
-  let recent_5_ele = document.getElementById("recent_5_data");
-  recent_5_ele.innerHTML = "";
-
-  let lastFive = transactions.slice(-5).reverse();
-
-  for (let recent of lastFive) {
-    recent_5_ele.innerHTML += `
-    <tr>
-        <td>${recent.description}</td>
-        <td>${recent.category}</td>
-        <td>&#8377;${recent.amount}</td>
-    </tr>
-  `;
-  }
-}
-
-function render_rows() {
-  trac_rows.innerHTML = "";
-
-  for (let ele of transactions) {
-    let index = transactions.indexOf(ele);
-    trac_rows.innerHTML += `
-            <tr>
-                  <td id="id">${index + 1}</td>
-                  <td id="delbydate">${ele.date}</td>
-                  <td>${ele.description}</td>
-                  <td>${ele.category}</td>
-                  <td class="type_inc_exp">${ele.type}</td>
-                  <td>&#8377;${ele.amount}</td>
-                  <td class="blue">EDIT</td>
-                  <td class="delete" id="del" onclick="delete_row(this)">DELETE</td>
-                </tr>
-        `;
-    type_color(ele.type);
-  }
-}
-
-function print_trac() {
-  for (let ele of transactions) console.log(ele);
-}
-
-function clearAll(confirmed) {
-  if (!confirmed && !confirm("Clear all saved transactions and reset your budget? This cannot be undone.")) return;
-  transactions.length = 0;
-  summary.budget = 0;
-  summary.expense = 0;
-  summary.expensive = "none";
-  summary.income = 0;
-  summary.balance = 0;
-  summary.expensive_amount = 0;
-  load_trac();
-  load_summary();
-  transaction_record();
-  settingsStatus.textContent = "All saved transactions and budget have been cleared.";
-}
-
-function transaction_record() {
-  transactions = JSON.parse(localStorage.getItem("allTransactions")) || [];
-  summary = JSON.parse(localStorage.getItem("summary")) || {
+  const DEFAULT_SUMMARY = {
     balance: 0,
     income: 0,
     expense: 0,
@@ -198,164 +14,380 @@ function transaction_record() {
     expensive: "none",
     expensive_amount: 0,
   };
-  top_5();
-  render_summary();
-  render_rows();
-  renderChart();
-  if (transactions.length === 0) {
-    section5.style.display = "none";
-    section6.style.display = "flex";
-  } else {
-    section6.style.display = "none";
-    section5.style.display = "flex";
+
+  const elements = {
+    form: document.getElementById("myForm"),
+    date: document.getElementById("date"),
+    description: document.getElementById("description"),
+    category: document.getElementById("cate"),
+    type: document.getElementById("type"),
+    amount: document.getElementById("amount"),
+    recentRows: document.getElementById("recent_5_data"),
+    transactionRows: document.getElementById("trac_rows"),
+    transactionsSection: document.getElementById("section5"),
+    emptySection: document.getElementById("section6"),
+    balance: document.getElementById("summ_balance"),
+    income: document.getElementById("summ_income"),
+    expense: document.getElementById("summ_expense"),
+    budget: document.getElementById("summ_budget"),
+    expensive: document.getElementById("summ_expensive"),
+    budgetInput: document.getElementById("budget_input"),
+    chartCanvas: document.getElementById("myChart2"),
+    settingsButton: document.getElementById("settings-button"),
+    settingsDialog: document.getElementById("settings-dialog"),
+    settingsClose: document.getElementById("settings-close"),
+    themeSelect: document.getElementById("theme-select"),
+    downloadButton: document.getElementById("download-csv"),
+    resetButton: document.getElementById("reset-data"),
+    settingsStatus: document.getElementById("settings-status"),
+  };
+
+  let transactions = [];
+  let summary = { ...DEFAULT_SUMMARY };
+  let chart = null;
+
+  function readStoredJson(key, fallback) {
+    try {
+      const saved = localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : fallback;
+    } catch (error) {
+      console.warn(`Could not read ${key} from local storage.`, error);
+      return fallback;
+    }
   }
-}
 
-function type_color() {
-  const inc_exp = document.getElementsByClassName("type_inc_exp");
+  function saveJson(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (error) {
+      console.error(`Could not save ${key} to local storage.`, error);
+      setSettingsStatus("Could not save changes in this browser.");
+      return false;
+    }
+  }
 
-  for (let i = 0; i < inc_exp.length; i++) {
-    let element = inc_exp[i];
-    let value = element.innerHTML.trim();
-    if (value === "EXPENSE") {
-      element.style.color = "red";
+  function setSettingsStatus(message) {
+    if (elements.settingsStatus) elements.settingsStatus.textContent = message;
+  }
+
+  function loadSavedData() {
+    const storedTransactions = readStoredJson(STORAGE_KEYS.transactions, []);
+    transactions = Array.isArray(storedTransactions) ? storedTransactions : [];
+
+    const storedSummary = readStoredJson(STORAGE_KEYS.summary, {});
+    summary = { ...DEFAULT_SUMMARY, ...(storedSummary && typeof storedSummary === "object" ? storedSummary : {}) };
+    recalculateSummary();
+  }
+
+  function saveTransactions() {
+    saveJson(STORAGE_KEYS.transactions, transactions);
+  }
+
+  function saveSummary() {
+    saveJson(STORAGE_KEYS.summary, summary);
+  }
+
+  function calculateSummary() {
+    const totals = transactions.reduce((result, transaction) => {
+      const amount = Number(transaction.amount) || 0;
+      if (String(transaction.type).toUpperCase() === "INCOME") {
+        result.income += amount;
+      } else {
+        result.expense += amount;
+      }
+      if (String(transaction.type).toUpperCase() === "EXPENSE" && amount > result.expensiveAmount) {
+        result.expensiveAmount = amount;
+        result.expensive = transaction.description || "none";
+      }
+      return result;
+    }, { income: 0, expense: 0, expensive: "none", expensiveAmount: 0 });
+
+    return {
+      ...summary,
+      income: totals.income,
+      expense: totals.expense,
+      balance: totals.income - totals.expense,
+      expensive: totals.expensive,
+      expensive_amount: totals.expensiveAmount,
+      budget: Number(summary.budget) || 0,
+    };
+  }
+
+  function recalculateSummary() {
+    summary = calculateSummary();
+  }
+
+  function initializeSettings() {
+    if (!elements.settingsButton || !elements.settingsDialog) return;
+
+    let savedTheme = "dark";
+    try {
+      savedTheme = localStorage.getItem(STORAGE_KEYS.theme) === "light" ? "light" : "dark";
+    } catch (error) {
+      // Use the default theme if browser storage is disabled.
+    }
+    applyTheme(savedTheme, false);
+
+    elements.settingsButton.addEventListener("click", openSettings);
+    elements.settingsClose?.addEventListener("click", closeSettings);
+    elements.settingsDialog.addEventListener("click", (event) => {
+      if (event.target === elements.settingsDialog) closeSettings();
+    });
+    elements.themeSelect?.addEventListener("change", () => {
+      applyTheme(elements.themeSelect.value, true);
+      setSettingsStatus("Theme preference saved.");
+    });
+    elements.downloadButton?.addEventListener("click", downloadTransactionsCsv);
+    elements.resetButton?.addEventListener("click", resetAllData);
+  }
+
+  function openSettings() {
+    const dialog = elements.settingsDialog;
+    if (!dialog) return;
+    setSettingsStatus("");
+    if (typeof dialog.showModal === "function") {
+      if (!dialog.open) dialog.showModal();
     } else {
-      element.style.color = "green";
+      // Fallback for browsers without the native dialog methods.
+      dialog.setAttribute("open", "");
+      dialog.classList.add("settings-dialog-open");
     }
   }
-}
 
-function update_summary(transaction) {
-  let discription_check = transaction.description;
-  let type_check = transaction.type;
-  let amount_check = transaction.amount;
-
-  if (type_check === "INCOME") {
-    summary.balance += amount_check;
-    summary.income += amount_check;
-  } else {
-    if (summary.balance > amount_check) summary.balance -= amount_check;
-    summary.expense += amount_check;
-  }
-
-  if (amount_check > summary.expensive_amount && type_check === "EXPENSE") {
-    summary.expensive_amount = amount_check;
-    summary.expensive = discription_check;
-  }
-
-  load_summary();
-  render_summary();
-  renderChart();
-}
-
-function reset_summary() {
-  load_summary();
-  summary.budget = 0;
-  summary.expense = 0;
-  summary.expensive = "none";
-  summary.income = 0;
-  summary.balance = 0;
-  summary.expensive_amount = 0;
-}
-
-function update_summary2() {
-  reset_summary();
-
-  for (let ele of transactions) {
-    if (ele.type === "INCOME") {
-      summary.balance += ele.amount;
-      summary.income += ele.amount;
+  function closeSettings() {
+    const dialog = elements.settingsDialog;
+    if (!dialog) return;
+    if (typeof dialog.close === "function" && dialog.open) {
+      dialog.close();
     } else {
-      if (summary.balance > ele.amount) summary.balance -= ele.amount;
-      summary.expense += ele.amount;
-    }
-
-    if (ele.amount > summary.expensive_amount && ele.type === "EXPENSE") {
-      summary.expensive = ele.description;
-      summary.expensive_amount = ele.amount;
+      dialog.removeAttribute("open");
+      dialog.classList.remove("settings-dialog-open");
     }
   }
-  render_summary();
-  renderChart();
-  load_summary();
-}
 
-function render_summary() {
-  balance.innerHTML = `BALANCE : &#8377;${summary.balance}`;
-  income.innerHTML = `INCOME : &#8377;${summary.income}`;
-  expense.innerHTML = `EXPENSE : &#8377;${summary.expense}`;
-  render_budget();
-  expensive.innerHTML = `EXPENSIVE : ${summary.expensive}`;
-}
-
-function render_budget() {
-  budget.innerHTML = `BUDGET : &#8377;${summary.budget}`;
-}
-
-function addBudget() {
-  let budget = Number(document.getElementById("budget_input").value.trim());
-  document.getElementById("budget_input").value = "";
-  if (budget === 0 || isNaN(budget) || budget === "") {
-    alert("enter a valid budget!");
-    return;
+  function applyTheme(theme, persist) {
+    const selectedTheme = theme === "light" ? "light" : "dark";
+    document.documentElement.dataset.theme = selectedTheme;
+    if (elements.themeSelect) elements.themeSelect.value = selectedTheme;
+    if (persist) {
+      try {
+        localStorage.setItem(STORAGE_KEYS.theme, selectedTheme);
+      } catch (error) {
+        setSettingsStatus("Theme changed for this visit, but could not be saved.");
+      }
+    }
   }
-  summary.budget = budget;
-  render_budget();
-  renderChart();
-  load_summary();
-}
 
-function delete_row(button) {
-  let tr = button.parentNode;
-  let idele = tr.firstElementChild;
-  let index = Number(idele.innerHTML) - 1;
-  if (index >= 0) {
+  function csvCell(value) {
+    let text = String(value == null ? "" : value);
+    // Avoid spreadsheet formula injection from user-provided text fields.
+    if (/^[\s]*[=+@\-]/.test(text)) text = `'${text}`;
+    return `"${text.replace(/"/g, '""')}"`;
+  }
+
+  function downloadTransactionsCsv() {
+    const headers = ["id", "date", "description", "category", "type", "amount"];
+    const rows = transactions.map((transaction, index) => [
+      index + 1,
+      transaction.date,
+      transaction.description,
+      transaction.category,
+      transaction.type,
+      transaction.amount,
+    ]);
+    const csv = [headers, ...rows]
+      .map((row) => row.map(csvCell).join(","))
+      .join("\r\n");
+    const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = "finance-transactions.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    setSettingsStatus(transactions.length ? "Your CSV download has started." : "Downloaded an empty CSV; there are no transactions yet.");
+  }
+
+  function handleTransactionSubmit(event) {
+    event.preventDefault();
+
+    const date = elements.date.value;
+    const description = elements.description.value.replace(/\s+/g, " ").trim();
+    const category = elements.category.value;
+    const type = elements.type.value;
+    const amount = Number(elements.amount.value);
+
+    if (!date || !description || !category || !type || !Number.isFinite(amount) || amount <= 0) {
+      alert("Check entered details!");
+      return;
+    }
+
+    transactions.push({
+      date,
+      description: description.toUpperCase(),
+      category: category.toUpperCase(),
+      type: type.toUpperCase(),
+      amount,
+    });
+    recalculateSummary();
+    persistAndRender();
+    elements.form.reset();
+  }
+
+  function persistAndRender() {
+    saveTransactions();
+    saveSummary();
+    render();
+  }
+
+  function render() {
+    renderRecentTransactions();
+    renderTransactionTable();
+    renderSummary();
+    renderChart();
+
+    const hasTransactions = transactions.length > 0;
+    if (elements.transactionsSection) elements.transactionsSection.style.display = hasTransactions ? "flex" : "none";
+    if (elements.emptySection) elements.emptySection.style.display = hasTransactions ? "none" : "flex";
+  }
+
+  function renderRecentTransactions() {
+    if (!elements.recentRows) return;
+    elements.recentRows.replaceChildren();
+
+    transactions.slice(-5).reverse().forEach((transaction) => {
+      const row = document.createElement("tr");
+      [transaction.description, transaction.category, `₹${transaction.amount}`].forEach((value) => {
+        const cell = document.createElement("td");
+        cell.textContent = value == null ? "" : String(value);
+        row.appendChild(cell);
+      });
+      elements.recentRows.appendChild(row);
+    });
+  }
+
+  function renderTransactionTable() {
+    if (!elements.transactionRows) return;
+    elements.transactionRows.replaceChildren();
+
+    transactions.forEach((transaction, index) => {
+      const row = document.createElement("tr");
+      const values = [index + 1, transaction.date, transaction.description, transaction.category];
+      values.forEach((value) => {
+        const cell = document.createElement("td");
+        cell.textContent = value == null ? "" : String(value);
+        row.appendChild(cell);
+      });
+
+      const typeCell = document.createElement("td");
+      typeCell.className = "type_inc_exp";
+      typeCell.textContent = String(transaction.type || "").toUpperCase();
+      typeCell.style.color = typeCell.textContent === "EXPENSE" ? "red" : "green";
+      row.appendChild(typeCell);
+
+      const amountCell = document.createElement("td");
+      amountCell.textContent = `₹${Number(transaction.amount) || 0}`;
+      row.appendChild(amountCell);
+
+      const editCell = document.createElement("td");
+      editCell.className = "blue";
+      editCell.textContent = "EDIT";
+      row.appendChild(editCell);
+
+      const deleteCell = document.createElement("td");
+      deleteCell.className = "delete";
+      deleteCell.textContent = "DELETE";
+      deleteCell.setAttribute("role", "button");
+      deleteCell.tabIndex = 0;
+      deleteCell.setAttribute("aria-label", `Delete transaction ${index + 1}`);
+      deleteCell.addEventListener("click", () => deleteTransaction(index));
+      deleteCell.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          deleteTransaction(index);
+        }
+      });
+      row.appendChild(deleteCell);
+      elements.transactionRows.appendChild(row);
+    });
+  }
+
+  function renderSummary() {
+    if (elements.balance) elements.balance.textContent = `BALANCE : ₹${summary.balance}`;
+    if (elements.income) elements.income.textContent = `INCOME : ₹${summary.income}`;
+    if (elements.expense) elements.expense.textContent = `EXPENSE : ₹${summary.expense}`;
+    if (elements.budget) elements.budget.textContent = `BUDGET : ₹${summary.budget}`;
+    if (elements.expensive) elements.expensive.textContent = `EXPENSIVE : ${summary.expensive}`;
+  }
+
+  function addBudget() {
+    const amount = Number(elements.budgetInput?.value.trim());
+    if (elements.budgetInput) elements.budgetInput.value = "";
+    if (!Number.isFinite(amount) || amount <= 0) {
+      alert("Enter a valid budget!");
+      return;
+    }
+    summary.budget = amount;
+    saveSummary();
+    renderSummary();
+    renderChart();
+  }
+
+  function deleteTransaction(index) {
+    if (index < 0 || index >= transactions.length) return;
     transactions.splice(index, 1);
-  }
-  load_trac();
-  transaction_record();
-  update_summary2();
-}
-
-const ctx2 = document.getElementById("myChart2");
-let chart2 = null;
-
-function renderChart() {
-  if (!ctx2 || typeof Chart === "undefined") return;
-
-  const chartValues = [
-    Number(summary.balance || 0),
-    Number(summary.income || 0),
-    Number(summary.expense || 0),
-    Number(summary.budget || 0),
-    Number(summary.expensive_amount || 0),
-  ];
-
-  if (chart2) {
-    chart2.data.datasets[0].data = chartValues;
-    chart2.update();
-    return;
+    recalculateSummary();
+    persistAndRender();
   }
 
-  chart2 = new Chart(ctx2, {
-    type: "bar",
-    data: {
-      labels: ["BALANCE", "INCOME", "EXPENSE", "BUDGET", "AMOUNT"],
-      datasets: [
-        {
-          label: "Finance summary",
-          data: chartValues,
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: 100000,
-        },
+  function clearAll() {
+    transactions = [];
+    summary = { ...DEFAULT_SUMMARY };
+    persistAndRender();
+    setSettingsStatus("All saved transactions and your budget have been cleared.");
+  }
+
+  function resetAllData() {
+    if (!confirm("This will permanently delete all saved transactions and your budget. Continue?")) return;
+    clearAll();
+    setSettingsStatus("Your transactions and budget have been reset.");
+  }
+
+  function renderChart() {
+    if (!elements.chartCanvas || typeof Chart === "undefined") return;
+    const values = [summary.balance, summary.income, summary.expense, summary.budget, summary.expensive_amount]
+      .map((value) => Number(value) || 0);
+
+    if (chart) {
+      chart.data.datasets[0].data = values;
+      chart.update();
+      return;
+    }
+
+    chart = new Chart(elements.chartCanvas, {
+      type: "bar",
+      data: {
+        labels: ["BALANCE", "INCOME", "EXPENSE", "BUDGET", "AMOUNT"],
+        datasets: [{ label: "Finance summary", data: values, borderWidth: 2 }],
       },
-    },
-  });
-}
+      options: { scales: { y: { min: 0, max: 100000 } }, responsive: true, maintainAspectRatio: false },
+    });
+  }
+
+  // Keep the existing inline HTML actions working while the script is reorganized.
+  window.addBudget = addBudget;
+  window.clearAll = clearAll;
+  window.delete_row = (button) => {
+    const row = button?.closest("tr");
+    const index = row ? Array.from(row.parentElement.children).indexOf(row) : -1;
+    deleteTransaction(index);
+  };
+
+  elements.form?.addEventListener("submit", handleTransactionSubmit);
+  loadSavedData();
+  render();
+  initializeSettings();
+})();
