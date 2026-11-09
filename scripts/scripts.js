@@ -16,8 +16,14 @@ let summary = {
   expensive_amount: 0,
 };
 
+const settingsDialog = document.getElementById("settings-dialog");
+const themeSelect = document.getElementById("theme-select");
+const settingsStatus = document.getElementById("settings-status");
+const THEME_STORAGE_KEY = "financeTrackerTheme";
+
 window.onload = function () {
   transaction_record();
+  initializeSettings();
 };
 
 function load_trac() {
@@ -26,6 +32,63 @@ function load_trac() {
 
 function load_summary() {
   localStorage.setItem("summary", JSON.stringify(summary));
+}
+
+function initializeSettings() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  const theme = savedTheme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = theme;
+  themeSelect.value = theme;
+
+  document.getElementById("settings-button").addEventListener("click", function () {
+    settingsDialog.showModal();
+  });
+  document.getElementById("settings-close").addEventListener("click", function () {
+    settingsDialog.close();
+  });
+  settingsDialog.addEventListener("click", function (event) {
+    if (event.target === settingsDialog) settingsDialog.close();
+  });
+  themeSelect.addEventListener("change", function () {
+    const selectedTheme = themeSelect.value === "light" ? "light" : "dark";
+    document.documentElement.dataset.theme = selectedTheme;
+    localStorage.setItem(THEME_STORAGE_KEY, selectedTheme);
+  });
+  document.getElementById("download-csv").addEventListener("click", downloadTransactionsCsv);
+  document.getElementById("reset-data").addEventListener("click", function () {
+    if (!confirm("This will permanently delete all saved transactions and your budget. Continue?")) return;
+    clearAll(true);
+    settingsStatus.textContent = "Your transactions and budget have been reset.";
+  });
+}
+
+function csvCell(value) {
+  let text = String(value == null ? "" : value);
+  // Prevent spreadsheet formula execution for user-entered values.
+  if (/^[\s]*[=+@\-]/.test(text)) text = "'" + text;
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+function downloadTransactionsCsv() {
+  const headers = ["id", "date", "description", "category", "type", "amount"];
+  const rows = transactions.map(function (transaction, index) {
+    return [index + 1, transaction.date, transaction.description, transaction.category, transaction.type, transaction.amount];
+  });
+  const csv = [headers, ...rows].map(function (row) {
+    return row.map(csvCell).join(",");
+  }).join("\r\n");
+  const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
+  const downloadUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = "finance-transactions.csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(downloadUrl);
+  settingsStatus.textContent = transactions.length
+    ? "Your CSV download has started."
+    : "Downloaded an empty CSV; there are no transactions yet.";
 }
 
 document.getElementById("myForm").addEventListener("submit", function (e) {
@@ -83,7 +146,6 @@ function top_5() {
     </tr>
   `;
   }
-  console.log("recent 5 updated");
 }
 
 function render_rows() {
@@ -105,14 +167,14 @@ function render_rows() {
         `;
     type_color(ele.type);
   }
-  console.log("render complete!");
 }
 
 function print_trac() {
   for (let ele of transactions) console.log(ele);
 }
 
-function clearAll() {
+function clearAll(confirmed) {
+  if (!confirmed && !confirm("Clear all saved transactions and reset your budget? This cannot be undone.")) return;
   transactions.length = 0;
   summary.budget = 0;
   summary.expense = 0;
@@ -123,11 +185,19 @@ function clearAll() {
   load_trac();
   load_summary();
   transaction_record();
+  settingsStatus.textContent = "All saved transactions and budget have been cleared.";
 }
 
 function transaction_record() {
   transactions = JSON.parse(localStorage.getItem("allTransactions")) || [];
-  summary = JSON.parse(localStorage.getItem("summary")) || {};
+  summary = JSON.parse(localStorage.getItem("summary")) || {
+    balance: 0,
+    income: 0,
+    expense: 0,
+    budget: 0,
+    expensive: "none",
+    expensive_amount: 0,
+  };
   top_5();
   render_summary();
   render_rows();
@@ -135,7 +205,7 @@ function transaction_record() {
   if (transactions.length === 0) {
     section5.style.display = "none";
     section6.style.display = "flex";
-  } else if (transactions.length > 0) {
+  } else {
     section6.style.display = "none";
     section5.style.display = "flex";
   }
@@ -239,7 +309,6 @@ function delete_row(button) {
   let tr = button.parentNode;
   let idele = tr.firstElementChild;
   let index = Number(idele.innerHTML) - 1;
-  console.log(index);
   if (index >= 0) {
     transactions.splice(index, 1);
   }
@@ -252,7 +321,7 @@ const ctx2 = document.getElementById("myChart2");
 let chart2 = null;
 
 function renderChart() {
-  if (!ctx2) return;
+  if (!ctx2 || typeof Chart === "undefined") return;
 
   const chartValues = [
     Number(summary.balance || 0),
@@ -274,7 +343,7 @@ function renderChart() {
       labels: ["BALANCE", "INCOME", "EXPENSE", "BUDGET", "AMOUNT"],
       datasets: [
         {
-          label: "# of Votes",
+          label: "Finance summary",
           data: chartValues,
           borderWidth: 2,
         },
@@ -290,7 +359,3 @@ function renderChart() {
     },
   });
 }
-
-let summary2 = JSON.parse(localStorage.getItem("summary")) || {};
-console.log(summary2);
-renderChart();
